@@ -1,0 +1,15 @@
+{
+  "name": "owleye",
+  "main": "index.html",
+  "window": {
+    "toolbar": false,
+    "resizable": true,
+    "fullscreen": false,
+	"icon" : "img/app.png",
+    "width": 800,
+    "height": 600
+  },
+  "dependencies": {
+    "htmlparser2": "~3.7.3"
+  }
+}
