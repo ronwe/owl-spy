@@ -1,3 +1,4 @@
+基于nw的工具
 通过 http 代理实现的 fiddler，可通过 PC 调试手机页面
 查看页面dom, 运行js，回显console.log
 
