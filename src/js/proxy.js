@@ -84,7 +84,7 @@ function getProxy(req , res){
         host : hostPart[0],
         port : hostPart[1] || 80 ,
         headers: req.headers,
-        path : req.url,
+        path : url.parse(req.url).path,
         agent : false,
         method : req.method ,
     }

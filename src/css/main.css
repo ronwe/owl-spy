@@ -400,3 +400,8 @@ body,
   margin: auto;
   width: 90%;
 }
+.highLightType {
+	background-color:#CCFFFF;
+	border-bottom:1px dotted #ccc;
+	margin-bottom:2px;
+}

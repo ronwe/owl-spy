@@ -36,6 +36,7 @@ function upResultCache( val){
 	for (var k in val){
 		result[id][k] = val[k]
 	}
+	$('#' + id).data('type' , val.res_type)
 	if ('text/html' == val.res_type){
 		$('#' + id).append('<span class=eys >'+getIcon('icon_spy_status.png')+'</span>')
 		///console.log(result[id].uri , val.res_type)
@@ -48,8 +49,27 @@ workerCmd.printUrl = function(val){
 	if (_set.spyon.indexOf(val.url) !=-1) mark += getIcon('spy')
 
 	//mark += '<span class=eys url="' + val.url + '">(o)</span>'
-	conUrl.append('<li id="' + val.id + '" >' + val.url + ' ' +  mark + '</li>')
+	var style = isLogShow(val.url)? '' : 'display:none' 
+	conUrl.append('<li id="' + val.id + '" style="' + style + '"><em>' + val.url + '</em> ' +  mark + '</li>')
 		.scrollTop(++_tcount *  1000 )
+}
+function isLogShow(url){
+	//config.url_mask
+	if (!url) return false
+	if (!config.url_mask) return true
+	return config.url_mask.test(url) 
+}
+
+function filterLogShow(){
+	conUrl.find('li').each(function(i ,item){
+		item = $(item)
+		var url = item.find('em').text()
+		if (!isLogShow(url)) {
+			item.hide()
+		}else{
+			item.show()
+		}
+	})
 }
 workerCmd.reqComplete = workerCmd.reqStart =  function(val){
 	upResultCache(val)
@@ -89,6 +109,7 @@ function snapStyle(id , winid , newStyle){
 	runRun(null , 'OE_snapStyle("' + id + '" , "' + winid + '" ,  '+  (newStyle? JSON.stringify(newStyle) : 'null')+ ')')
 }
 //workerCmd.snapBk(fs.readFileSync('./tt'))
+
 
 function log(){
 	var args = Array.prototype.slice.call(arguments , 0)
@@ -359,9 +380,36 @@ function main(){
 		if (!detailId || ! result[detailId]) return 
 		showDetail( this.getAttribute('act') )
 	})
+	$('#res_type').on('change' , function(){
+		var higt_light	= this.value
+			,t
+		conUrl.find('li').each(function(i ,item){
+			item = $(item)
+			if (higt_light == item.data('type')) {
+				item.addClass('highLightType')
+				t = true
+			}else{
+				item.removeClass('highLightType')
+			}
+		})
+		t && $('.highLightType')[0].scrollIntoView()
+
+	})
+	var _t_input
 	$('#url_filter').on('input',function(){
-		config.url_filter = this.value.trim()
-		upConfig()
+		//config.url_filter = this.value.trim()
+		var url_mask = this.value.trim()
+		_t_input && window.clearTimeout(_t_input)
+		_t_input = window.setTimeout(function(){
+			if (url_mask) {
+				url_mask = url_mask.replace(/\\/g, '\\\\')
+				config.url_mask = new RegExp(url_mask)
+			}else{
+				config.url_mask = null
+			}
+			filterLogShow()
+		} , 50)
+		//upConfig()
 	})
 	$('#editRule').submit(function(){
 		if (!detailId || ! result[detailId]) return 
