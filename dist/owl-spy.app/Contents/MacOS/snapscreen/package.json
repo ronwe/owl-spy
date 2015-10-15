@@ -1,0 +1,21 @@
+{
+  "name": "snapscreen",
+  "node-remote": "*.meilishuo.com",
+  "main": "http://nw.fedevot.meilishuo.com/screenshot/index.html",
+  "version": "0.1.0",
+  "user-agent": "node file share [%name/%ver] %osinfo",
+  "chromium-args": "--enable-usermedia-screen-capturing",
+  "window": {
+    "toolbar": true,
+    "frame": true,
+    "resizable": true,
+    "fullscreen": false,
+    "width": 350,
+    "height": 600
+  },
+  "webkit": {
+    "page-cache": false
+  },
+  "dependencies": {
+  }
+}
